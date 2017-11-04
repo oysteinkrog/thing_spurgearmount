@@ -1,0 +1,14 @@
+dist: trusty
+
+sudo: false
+
+services:
+    - docker
+
+language: generic
+
+addons:
+  artifacts: true
+
+script:
+    - docker build -t build .
