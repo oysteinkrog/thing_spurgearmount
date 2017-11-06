@@ -29,7 +29,7 @@ module spurgearhub(part)
 {
     h=2*mm;
     gear_holes_spacing = 15.3*mm;
-    main_dia=gear_holes_spacing*sqrt(2)+1*mm;
+    main_dia=gear_holes_spacing*sqrt(2)+0*mm;
     bore_dia = 5.25*mm;
     hub_dia = main_dia;
     hub_h = h+3.5*mm;
@@ -68,20 +68,15 @@ module spurgearhub(part)
 
         for(a=[-1,1])
         tz(h+.5*mm)
-        tx(a*(hub_dia/2))
-        screw_cut(nut=NutKnurlM3_8_42, head="set", nut_offset=0*mm, with_nut=true, with_nut_cut=true, orient=X*a, align=-X*a);
+        tx(a*(bore_dia/2-.1))
+        screw_cut(nut=NutKnurlM3_8_42, head="set", h=6, with_nut=true, with_nut_cut=true, with_nut_access=false, orient=-X*a, align=X*a);
 
         tz(hub_h+1*mm)
-        /*for(x=[-1,1])*/
-        /*for(y=[-1,1])*/
-        /*ty(y*(gear_holes_spacing/2))*/
-        /*tx(x*(gear_holes_spacing/2))*/
-        /*screw_cut(nut=NutHexM3, head="button", h=h, with_nut=false, orient=-Z, align=-Z);*/
         rz(90)
         for(i=[45:360/4:360+45])
         rz(i)
         tx(7.65*mm)
-        screw_cut(nut=NutHexM3, h=h, head="button", head_embed=true, with_nut=false, orient=-Z, align=-Z);
+        screw_cut(nut=NutHexM3, h=hub_h, head="button", head_embed=true, with_nut=false, orient=-Z, align=-Z);
 
     }
 }
