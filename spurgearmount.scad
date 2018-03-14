@@ -29,13 +29,13 @@ module spurgearhub(part)
 {
     h=2*mm;
     gear_holes_spacing = 15.3*mm;
-    main_dia=gear_holes_spacing*sqrt(2)+0*mm;
+    main_dia=gear_holes_spacing*sqrt(2)+-0*mm;
     bore_dia = 5.25*mm;
     hub_dia = main_dia;
-    hub_h = h+3.5*mm;
+    hub_h = h+2.8*mm;
 
     inner_dia=9.55*mm;
-    inner_h = 6*mm;
+    inner_h = 4*mm;
     if(part==U)
     {
         difference()
@@ -57,7 +57,7 @@ module spurgearhub(part)
             for(a=[-1,1])
             tz(h+.5*mm)
             tx(a*hub_dia/2)
-            cylindera(h=5*mm, d=5*mm, orient=-X*a, align=-X*a);
+            cylindera(h=5*mm, d=4.5*mm, orient=-X*a, align=-X*a);
         }
 
         rcylindera(d=inner_dia, h=inner_h, orient=Z, align=-Z, extra_h=h, extra_align=Z);
@@ -67,11 +67,11 @@ module spurgearhub(part)
         cylindera(d=bore_dia, h=100*mm, orient=Z, align=N, extra_h=.1, extra_align=-Z);
 
         for(a=[-1,1])
-        tz(h+.5*mm)
+        tz(h+.1*mm)
         tx(a*(bore_dia/2-.1))
         screw_cut(nut=NutKnurlM3_8_42, head="set", h=6, with_nut=true, with_nut_cut=true, with_nut_access=false, orient=-X*a, align=X*a);
 
-        tz(hub_h+1*mm)
+        tz(hub_h+0*mm)
         rz(90)
         for(i=[45:360/4:360+45])
         rz(i)
