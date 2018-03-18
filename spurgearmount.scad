@@ -29,7 +29,7 @@ module spurgearhub(part)
 {
     h=1*mm;
     gear_holes_spacing = 15.3*mm;
-    main_dia=gear_holes_spacing*sqrt(2)-3*mm;
+    main_dia=gear_holes_spacing*sqrt(2)-1*mm;
     bore_dia = 5*mm + .25*mm;
     hub_dia = main_dia;
     hub_h = h+2.8*mm;
@@ -68,7 +68,7 @@ module spurgearhub(part)
         for(i=[0:360/8:360])
         if(i%2 == 0)
         rz(i)
-        tx(7.70*mm)
+        tx(8*mm)
         cylindera(d=3.15*mm, h=h+2*mm, orient=Z, align=-Z);
 
     }
@@ -86,7 +86,7 @@ module spurgearhub(part)
         rz(90)
         for(i=[45:360/4:360+45])
         rz(i)
-        tx(7.70*mm)
+        tx(8*mm)
         tz(1*mm)
         screw_cut(nut=NutHexM3, h=7*mm, head="button", head_embed=true, with_nut=false, orient=-Z, align=-Z);
     }
