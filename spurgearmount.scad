@@ -32,10 +32,13 @@ module spurgearhub(part)
     main_dia=gear_holes_spacing*sqrt(2)-1*mm;
     bore_dia = 5*mm + .25*mm;
     hub_dia = main_dia;
-    hub_h = h+2.8*mm;
+    knurl_nut = NutKnurlM2_6_42;
+    hub_h = get(NutWidthMax, knurl_nut)+1*mm;
+    stub_d = 3.15*mm;
 
     inner_dia=9.55*mm;
     inner_h = 4*mm;
+
     if(part==U)
     {
         difference()
@@ -49,16 +52,25 @@ module spurgearhub(part)
     {
         hull()
         {
-            // main body
-            rcylindera(d=main_dia, h=h, orient=Z, align=Z);
+            /*rcylindera(d=hub_dia, h=hub_h, orient=Z, align=Z);*/
 
-            rcylindera(d=hub_dia, h=hub_h, orient=Z, align=Z);
-
+            rz(45)
             for(a=[-1,1])
-            tz(h)
-            tz(1*mm)
-            /*tx(-a*hub_dia/2)*/
-            cylindera(h=hub_dia/2, d=5*mm, orient=-X*a, align=-X*a);
+            tx(-a*(bore_dia/2 - .1*mm))
+            cylindera(h=get(NutThickness,knurl_nut), d=hub_h, orient=-X*a, align=-X*a+Z);
+
+            tz(hub_h+0*mm)
+            rz(90)
+            for(i=[45:360/2:360+45])
+            rz(i)
+            tx(8*mm)
+            rcylindera(h=hub_h, d=8*mm, orient=-Z, align=-Z);
+
+            for(i=[0:360/8:360])
+            if(i%2 == 0)
+            rz(i)
+            tx(8*mm)
+            rcylindera(d=stub_d+3*mm, h=hub_h, orient=Z, align=Z);
         }
 
         rcylindera(d=inner_dia, h=inner_h, orient=Z, align=-Z, extra_h=h, extra_align=Z);
@@ -69,7 +81,7 @@ module spurgearhub(part)
         if(i%2 == 0)
         rz(i)
         tx(8*mm)
-        cylindera(d=3.15*mm, h=h+2*mm, orient=Z, align=-Z);
+        cylindera(d=stub_d, h=h+3*mm, orient=Z, align=-Z);
 
     }
     else if(part=="neg")
@@ -77,14 +89,17 @@ module spurgearhub(part)
         cylindera(d=bore_dia, h=100*mm, orient=Z, align=N, extra_h=.1, extra_align=-Z);
 
         for(a=[-1,1])
-        tz(h)
-        tz(1*mm)
-        tx(a*(hub_dia/2))
-        screw_cut(nut=NutKnurlM3_8_42, head="set", nut_offset=0*mm, with_nut=true, with_nut_cut=true, orient=X*a, align=-X*a);
+        rz(45)
+        tx(-a*(bore_dia/2 - .1*mm))
+        tz(2.1*mm)
+        {
+            cylindera(d=3.25*mm, h=20*mm, orient=X*a, align=-X*a);
+            screw_cut(nut=knurl_nut, h=6*mm, head="set", nut_offset=0*mm, with_nut=true, with_nut_cut=false, orient=X*a, align=-X*a);
+        }
 
         tz(hub_h+0*mm)
         rz(90)
-        for(i=[45:360/4:360+45])
+        for(i=[45:360/2:360+45])
         rz(i)
         tx(8*mm)
         tz(1*mm)
