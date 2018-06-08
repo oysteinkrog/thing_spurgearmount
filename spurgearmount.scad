@@ -31,6 +31,7 @@ module spurgearhub(part)
     gear_holes_spacing = 15.3*mm;
     main_dia=gear_holes_spacing*sqrt(2)-1*mm;
     bore_dia = 5*mm + .25*mm;
+    bore_dia_ = 3.85*mm;;
     hub_dia = main_dia;
     knurl_nut = NutKnurlM2_6_42;
     hub_h = get(NutWidthMax, knurl_nut)+1*mm;
@@ -86,11 +87,16 @@ module spurgearhub(part)
     }
     else if(part=="neg")
     {
-        cylindera(d=bore_dia, h=100*mm, orient=Z, align=N, extra_h=.1, extra_align=-Z);
+        intersection()
+        {
+            cylindera(d=bore_dia, h=100*mm, orient=Z, align=N, extra_h=.1, extra_align=-Z);
+            rz(45)
+            cubea([bore_dia_,100*mm,100*mm]);
+        }
 
         for(a=[-1,1])
         rz(45)
-        tx(-a*(bore_dia/2 - .1*mm))
+        tx(-a*(bore_dia_/2 - .1*mm))
         tz(2.1*mm)
         {
             cylindera(d=3.25*mm, h=20*mm, orient=X*a, align=-X*a);
