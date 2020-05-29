@@ -25,7 +25,7 @@ $show_vit = is_build ? false : true;
 // enable preview model (faster openscad)
 $preview_mode = is_build ? false : true;
 
-module spurgearhub(part)
+module spurgearhub(part, with_grub=false)
 {
     h=1*mm;
     gear_holes_spacing = 15.3*mm;
@@ -34,12 +34,12 @@ module spurgearhub(part)
     bore_dia_ = 3.85*mm;;
     hub_dia = main_dia;
     knurl_nut = NutKnurlM2_6_42;
-    hub_h = get(NutWidthMax, knurl_nut)+1*mm;
+    hub_h = with_grub? get(NutWidthMax, knurl_nut)+1*mm : 2*mm;
     stub_d = 3.15*mm;
-    stub_h = h+3*mm;
+    stub_h = h+2.5*mm;
 
     inner_dia=9.55*mm;
-    inner_h = 4*mm;
+    inner_h = 3.5*mm;
 
     if(part==U)
     {
@@ -56,34 +56,37 @@ module spurgearhub(part)
         {
             /*rcylindera(d=hub_dia, h=hub_h, orient=Z, align=Z);*/
 
-            rz(45)
-            for(a=[-1,1])
-            tx(-a*(bore_dia/2 - .1*mm))
-            cylindera(h=get(NutThickness,knurl_nut), d=hub_h, orient=-X*a, align=-X*a+Z);
+            if(with_grub)
+            {
+                rz(45)
+                for(a=[-1,1])
+                tx(-a*(bore_dia/2 - .1*mm))
+                rcylindera(h=get(NutThickness,knurl_nut), d=hub_h, orient=-X*a, align=-X*a+Z);
+            }
 
             tz(hub_h+0*mm)
             rz(90)
             for(i=[45:360/2:360+45])
             rz(i)
             tx(8*mm)
-            rcylindera(h=hub_h, d=8*mm, orient=-Z, align=-Z);
+            rcylindera(h=hub_h, d=8*mm, orient=-Z, align=-Z, round_r=.5*mm);
 
             for(i=[0:360/8:360])
             if(i%2 == 0)
             rz(i)
             tx(8*mm)
-            rcylindera(d=stub_d+3*mm, h=hub_h, orient=Z, align=Z);
+            rcylindera(d=stub_d+3*mm, h=hub_h, orient=Z, align=Z, round_r=.5*mm);
         }
 
         rcylindera(d=inner_dia, h=inner_h, orient=Z, align=-Z, extra_h=h, extra_align=Z);
 
+        tz(hub_h)
         for(i=[0:8])
-
         for(i=[0:360/8:360])
         if(i%2 == 0)
         rz(i)
         tx(8*mm)
-        cylindera(d=stub_d, h=stub_h, orient=Z, align=-Z);
+        rcylindera(d=stub_d, h=stub_h+hub_h, orient=Z, align=-Z, round_r=.5*mm);
 
     }
     else if(part=="neg")
@@ -95,6 +98,7 @@ module spurgearhub(part)
             cubea([bore_dia_,100*mm,100*mm]);
         }
 
+        if(with_grub)
         for(a=[-1,1])
         rz(45)
         tx(-a*(bore_dia_/2 - .1*mm))
@@ -104,13 +108,13 @@ module spurgearhub(part)
             screw_cut(nut=knurl_nut, h=6*mm, head="set", nut_offset=0*mm, with_nut=true, with_nut_cut=false, orient=X*a, align=-X*a);
         }
 
-        tz(hub_h+0*mm)
+        tz(-hub_h+0*mm)
         rz(90)
         for(i=[45:360/2:360+45])
         rz(i)
         tx(8*mm)
-        tz(1*mm)
-        screw_cut(nut=NutHexM3, h=7*mm, head="button", head_embed=true, with_nut=false, orient=-Z, align=-Z);
+        /*tz(1*mm)*/
+        screw_cut(nut=NutHexM2, h=7*mm, head="button", head_embed=false, with_nut=false, orient=Z, align=Z);
     }
 }
 
