@@ -36,6 +36,7 @@ module spurgearhub(part)
     knurl_nut = NutKnurlM2_6_42;
     hub_h = get(NutWidthMax, knurl_nut)+1*mm;
     stub_d = 3.15*mm;
+    stub_h = h+3*mm;
 
     inner_dia=9.55*mm;
     inner_h = 4*mm;
@@ -82,7 +83,7 @@ module spurgearhub(part)
         if(i%2 == 0)
         rz(i)
         tx(8*mm)
-        cylindera(d=stub_d, h=h+3*mm, orient=Z, align=-Z);
+        cylindera(d=stub_d, h=stub_h, orient=Z, align=-Z);
 
     }
     else if(part=="neg")
